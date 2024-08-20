@@ -10,8 +10,8 @@ params:
   subtitle: Stephan Venter is a fine artist from Auckland, New Zealand. # todo: change default subtitle for your website.
   copyright: All rights reserved. # todo: set your copyright type.
   author: Stephan Venter # todo: set your full name.
-  dontShowSource: false # please, do not do this :)
-  dontShowLogo: true # If you want to hide the logo, this is what you set to true
+  dontShowSource: true # please, do not do this :)
+  dontShowLogo: false # If you want to hide the logo, this is what you set to true
   portfolio:
     columns:
       desktop:
