@@ -1,0 +1,1294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Engineering Planning — Training</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reset.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.css">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,700;12..96,800&family=IBM+Plex+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg: #161412;
+  --bg-2: #1c1a16;
+  --surface: #221f1a;
+  --surface-2: #2c2823;
+  --border: #4a463e;
+  --border-soft: #3a352e;
+
+  --text: #fefcf7;
+  --text-soft: #ede4d4;
+  --text-muted: #c7bcab;
+  --text-dim: #9a8f80;
+
+  --accent: #f08653;
+  --accent-warm: #f6b889;
+  --accent-cool: #a5d0bd;
+  --accent-cool-dim: #75a292;
+  --danger: #e88080;
+  --code-bg: #0f0d0b;
+
+  --font-display: 'Bricolage Grotesque', system-ui, sans-serif;
+  --font-body: 'IBM Plex Sans', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+html, body, .reveal-viewport, .reveal {
+  background: var(--bg) !important;
+  color: var(--text);
+}
+.reveal .backgrounds { background: var(--bg); }
+.reveal .slides { color: var(--text); }
+
+.reveal {
+  font-family: var(--font-body);
+  font-size: 26px;
+  font-weight: 400;
+  letter-spacing: -0.005em;
+}
+
+.reveal .slides { text-align: left; }
+.reveal .slides > section,
+.reveal .slides > section > section {
+  padding: 0;
+  height: 100%;
+  color: var(--text);
+}
+
+.reveal h1, .reveal h2, .reveal h3, .reveal h4 {
+  font-family: var(--font-display);
+  color: var(--text);
+  text-transform: none;
+  letter-spacing: -0.025em;
+  font-weight: 600;
+  margin: 0 0 0.6em 0;
+  line-height: 1.05;
+}
+.reveal h1 { font-size: 4.5em; font-weight: 700; letter-spacing: -0.04em; color: var(--text); }
+.reveal h2 { font-size: 2.4em; color: var(--text); }
+.reveal h3 { font-size: 1.5em; font-weight: 500; color: var(--text-soft); }
+.reveal h4 { font-size: 1.05em; font-weight: 500; color: var(--accent); text-transform: uppercase; letter-spacing: 0.12em; }
+
+.reveal p { margin: 0 0 0.7em 0; line-height: 1.5; color: var(--text); }
+.reveal ul, .reveal ol { margin: 0 0 0.5em 1.2em; line-height: 1.55; color: var(--text); }
+.reveal li { margin-bottom: 0.35em; color: var(--text); }
+.reveal li::marker { color: var(--accent); }
+.reveal strong { color: var(--accent-warm); font-weight: 600; }
+.reveal em { color: var(--text-soft); font-style: italic; }
+
+.reveal code {
+  font-family: var(--font-mono);
+  background: var(--code-bg);
+  color: var(--accent-warm);
+  padding: 0.1em 0.35em;
+  border-radius: 3px;
+  border: 1px solid var(--border-soft);
+  font-size: 0.85em;
+}
+.reveal pre {
+  font-family: var(--font-mono);
+  background: var(--code-bg);
+  color: var(--text-soft);
+  padding: 1.2em 1.4em;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  font-size: 0.62em;
+  line-height: 1.55;
+  box-shadow: 0 8px 32px -8px rgba(0,0,0,0.4);
+  overflow: auto;
+  max-height: 70vh;
+}
+.reveal pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  color: inherit;
+  font-size: 1em;
+}
+
+.slide-frame {
+  width: 100%;
+  height: 100%;
+  padding: 5vh 7vw 7vh 7vw;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  position: relative;
+  color: var(--text);
+}
+.slide-frame.center { justify-content: center; }
+
+.crumb {
+  font-family: var(--font-mono);
+  font-size: 0.7em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  margin-bottom: 0.8em;
+  display: flex;
+  align-items: center;
+  gap: 0.8em;
+}
+.crumb .dot {
+  display: inline-block;
+  width: 6px; height: 6px;
+  background: var(--accent);
+  border-radius: 50%;
+}
+.crumb .num { color: var(--accent); font-weight: 500; }
+
+.title-slide {
+  background:
+    radial-gradient(ellipse at 30% 20%, rgba(240,134,83,0.12), transparent 60%),
+    radial-gradient(ellipse at 80% 80%, rgba(165,208,189,0.07), transparent 50%),
+    var(--bg);
+}
+.title-slide .slide-frame { justify-content: center; }
+.title-slide .eyebrow {
+  font-family: var(--font-mono);
+  color: var(--accent);
+  font-size: 0.78em;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  margin-bottom: 2em;
+  display: flex;
+  align-items: center;
+  gap: 1.5em;
+}
+.title-slide .eyebrow::before,
+.title-slide .eyebrow::after {
+  content: '';
+  flex: 0 0 60px;
+  height: 1px;
+  background: var(--accent);
+  opacity: 0.6;
+}
+.title-slide .eyebrow::after { flex: 1; opacity: 0.25; }
+.title-slide h1 {
+  font-size: 7em;
+  font-weight: 800;
+  line-height: 0.92;
+  margin-bottom: 0.3em;
+  background: linear-gradient(135deg, var(--text) 0%, var(--accent-warm) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.title-slide .tagline {
+  font-family: var(--font-display);
+  font-size: 1.5em;
+  font-weight: 400;
+  color: var(--text-soft);
+  max-width: 20em;
+  line-height: 1.3;
+  margin-bottom: 3em;
+}
+.title-slide .meta {
+  font-family: var(--font-mono);
+  font-size: 0.75em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  display: flex;
+  gap: 2em;
+}
+.title-slide .meta span { color: var(--text-dim); }
+
+.phase-divider { background: linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%); }
+.phase-divider .slide-frame { justify-content: center; }
+.phase-divider .blueprint-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(240,134,83,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(240,134,83,0.05) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
+}
+.phase-divider .phase-num {
+  font-family: var(--font-display);
+  font-size: 18em;
+  font-weight: 800;
+  line-height: 0.85;
+  color: var(--accent);
+  letter-spacing: -0.06em;
+  margin-bottom: 0.2em;
+  position: relative;
+}
+.phase-divider .phase-num::after {
+  content: '';
+  position: absolute;
+  bottom: 0.15em;
+  left: 0;
+  width: 0.3em;
+  height: 0.08em;
+  background: var(--accent);
+}
+.phase-divider .phase-label {
+  font-family: var(--font-mono);
+  font-size: 1em;
+  color: var(--text-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  margin-bottom: 1em;
+}
+.phase-divider .phase-title {
+  font-family: var(--font-display);
+  font-size: 4em;
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  color: var(--text);
+  max-width: 18em;
+}
+.phase-divider .phase-when {
+  font-size: 0.9em;
+  color: var(--text-soft);
+  font-style: italic;
+  margin-top: 1.2em;
+  max-width: 30em;
+}
+
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4em;
+  align-items: start;
+}
+.two-col-3-2 {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: 3.5em;
+  align-items: start;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.4em 1.6em;
+  box-shadow: 0 4px 20px -8px rgba(0,0,0,0.3);
+  color: var(--text);
+}
+.card h4 { margin-bottom: 0.6em; }
+.card p { color: var(--text); }
+.card ul { margin-left: 1em; font-size: 0.92em; color: var(--text); }
+
+.dod {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.8em;
+  background: rgba(165,208,189,0.12);
+  border-left: 3px solid var(--accent-cool);
+  padding: 0.9em 1.2em;
+  border-radius: 0 6px 6px 0;
+  margin-top: 1.2em;
+  font-size: 0.88em;
+}
+.dod .check {
+  font-family: var(--font-mono);
+  color: var(--accent-cool);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+}
+.dod p { margin: 0; }
+.dod .check + div { color: var(--text); }
+
+.callout {
+  background: rgba(240,134,83,0.14);
+  border: 1px solid rgba(240,134,83,0.45);
+  border-radius: 6px;
+  padding: 1em 1.3em;
+  margin: 1em 0;
+  font-family: var(--font-mono);
+  font-size: 0.82em;
+  color: var(--accent-warm);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.pill {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.55em;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  padding: 0.25em 0.7em;
+  border-radius: 3px;
+  background: var(--surface-2);
+  color: var(--text-soft);
+  border: 1px solid var(--border);
+  vertical-align: middle;
+}
+.pill.optional { color: var(--accent-cool); border-color: var(--accent-cool-dim); }
+
+.tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6em;
+  margin: 1em 0 1.4em 0;
+}
+.tag-row .tag {
+  font-family: var(--font-mono);
+  font-size: 0.64em;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  padding: 0.4em 0.85em;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  border-radius: 3px;
+}
+
+/* Inline SVG diagrams */
+.diagram {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  max-height: 62vh;
+  display: block;
+  margin: 0.6em auto;
+}
+
+.anti-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1em 1.4em;
+  margin-top: 0.5em;
+}
+.anti {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--danger);
+  padding: 0.9em 1.15em;
+  border-radius: 0 4px 4px 0;
+  font-size: 0.8em;
+  line-height: 1.45;
+  color: var(--text);
+}
+.anti .x {
+  font-family: var(--font-mono);
+  color: var(--danger);
+  font-weight: 600;
+  margin-right: 0.4em;
+}
+.anti strong { color: var(--text); font-weight: 600; }
+
+.cheat-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.68em;
+  margin-top: 0.5em;
+}
+.cheat-table th, .cheat-table td {
+  text-align: left;
+  padding: 0.75em 1em;
+  vertical-align: top;
+  border-bottom: 1px solid var(--border-soft);
+  color: var(--text);
+}
+.cheat-table th {
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  font-size: 0.85em;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+  border-bottom: 1px solid var(--accent);
+  padding-bottom: 0.5em;
+}
+.cheat-table td:first-child {
+  font-family: var(--font-mono);
+  color: var(--accent-warm);
+  width: 20%;
+  white-space: nowrap;
+}
+.cheat-table td:nth-child(2) {
+  font-family: var(--font-display);
+  font-weight: 500;
+  color: var(--text);
+  width: 22%;
+}
+
+.reveal .progress { color: var(--accent); height: 3px; }
+.reveal .controls { color: var(--accent); opacity: 0.5; }
+.reveal .slide-number {
+  background: transparent;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 14px;
+}
+
+.example-prompt {
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1.5em 1.8em;
+  font-family: var(--font-mono);
+  font-size: 0.55em;
+  line-height: 1.65;
+  color: var(--text);
+  white-space: pre-wrap;
+}
+.example-prompt .key {
+  color: var(--accent);
+  text-transform: uppercase;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+}
+.example-prompt .emph {
+  color: var(--accent-warm);
+  font-weight: 600;
+}
+
+@media (max-width: 1000px) {
+  .reveal { font-size: 22px; }
+  .title-slide h1 { font-size: 5em; }
+  .phase-divider .phase-num { font-size: 12em; }
+  .two-col, .two-col-3-2 { grid-template-columns: 1fr; gap: 1.5em; }
+}
+</style>
+</head>
+<body>
+
+<div class="reveal">
+<div class="slides">
+
+<!-- ================ 1. TITLE ================ -->
+<section class="title-slide">
+  <div class="slide-frame">
+    <div class="eyebrow">Engineering Training</div>
+    <h1>Engineering<br>Planning.</h1>
+    <p class="tagline">How we plan, build, and ship features — with AI in the loop and humans on the hook.</p>
+    <div class="meta">
+      <span>Tradify Engineering</span>
+      <span>·</span>
+      <span>60 min</span>
+      <span>·</span>
+      <span>v1.0</span>
+    </div>
+  </div>
+  <aside class="notes">
+    Welcome. 60 minutes. We all use Devin daily so I'll skip the basics. Focus today: the workflow that wraps the AI — where the human gates are, what good looks like at each stage, and the anti-patterns to avoid. Worked example in the middle. Cheat sheet at the end you can screenshot.
+  </aside>
+</section>
+
+<!-- ================ 2. WHY ================ -->
+<section>
+  <div class="slide-frame center">
+    <div class="crumb"><span class="dot"></span><span>Why this exists</span></div>
+    <h2 style="font-size:3.4em; max-width: 18em; margin-bottom: 0.7em;">
+      Small. <span style="color:var(--accent)">Reviewable.</span><br>
+      Shippable. Owned.
+    </h2>
+    <p style="font-size: 1.15em; color: var(--text); max-width: 26em; line-height: 1.5;">
+      We're fast because we plan well, not because we skip planning. The agent writes the code — <em>you</em> own the outcome.
+    </p>
+  </div>
+  <aside class="notes">
+    The point of this whole process is to make work small, reviewable, and shippable — and to keep ownership human even when the typing is automated. If you take one thing from today: AI accelerates the parts after the plan. It doesn't replace the plan.
+  </aside>
+</section>
+
+<!-- ================ 3. CYCLE OVERVIEW ================ -->
+<section>
+  <div class="slide-frame">
+    <div class="crumb"><span class="num">00</span><span class="dot"></span><span>The cycle at a glance</span></div>
+    <h2 style="font-size:1.9em;">Six phases. One feedback loop.</h2>
+
+    <svg class="diagram" viewBox="0 0 1200 290" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+      <defs>
+        <marker id="ar1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#c7bcab"/>
+        </marker>
+      </defs>
+
+      <!-- Boxes -->
+      <g font-family="JetBrains Mono, monospace" font-size="15" font-weight="500" fill="#fefcf7">
+        <rect x="20"   y="115" width="170" height="60" rx="6" fill="#221f1a" stroke="#f08653" stroke-width="2"/>
+        <text x="105"  y="148" text-anchor="middle">01 Investigate</text>
+
+        <rect x="215"  y="115" width="170" height="60" rx="6" fill="#221f1a" stroke="#f08653" stroke-width="2"/>
+        <text x="300"  y="148" text-anchor="middle">02 Cycle plan</text>
+
+        <rect x="410"  y="115" width="170" height="60" rx="6" fill="#221f1a" stroke="#f08653" stroke-width="2"/>
+        <text x="495"  y="148" text-anchor="middle">03 SU plan</text>
+
+        <rect x="605"  y="115" width="170" height="60" rx="6" fill="#221f1a" stroke="#f08653" stroke-width="2"/>
+        <text x="690"  y="148" text-anchor="middle">04 Tickets</text>
+
+        <rect x="800"  y="115" width="170" height="60" rx="6" fill="#221f1a" stroke="#f08653" stroke-width="2"/>
+        <text x="885"  y="148" text-anchor="middle">05 Implement</text>
+
+        <rect x="995"  y="115" width="170" height="60" rx="6" fill="#221f1a" stroke="#f08653" stroke-width="2"/>
+        <text x="1080" y="148" text-anchor="middle">06 PR</text>
+      </g>
+
+      <!-- Solid arrows between boxes -->
+      <g stroke="#c7bcab" stroke-width="2" fill="none">
+        <line x1="190" y1="145" x2="210" y2="145" marker-end="url(#ar1)"/>
+        <line x1="385" y1="145" x2="405" y2="145" marker-end="url(#ar1)"/>
+        <line x1="580" y1="145" x2="600" y2="145" marker-end="url(#ar1)"/>
+        <line x1="775" y1="145" x2="795" y2="145" marker-end="url(#ar1)"/>
+        <line x1="970" y1="145" x2="990" y2="145" marker-end="url(#ar1)"/>
+      </g>
+
+      <!-- Dotted "optional skip" arrow under (Investigate → SU plan) -->
+      <path d="M 105 175 C 105 245, 495 245, 495 177"
+            stroke="#c7bcab" stroke-width="2" fill="none"
+            stroke-dasharray="5 4" marker-end="url(#ar1)"/>
+      <text x="300" y="270" text-anchor="middle"
+            font-family="JetBrains Mono, monospace" font-size="13" fill="#c7bcab" font-style="italic">
+        optional skip
+      </text>
+
+      <!-- Dotted "next SU" feedback over (PR → SU plan) -->
+      <path d="M 1080 115 C 1080 35, 495 35, 495 113"
+            stroke="#c7bcab" stroke-width="2" fill="none"
+            stroke-dasharray="5 4" marker-end="url(#ar1)"/>
+      <text x="787" y="25" text-anchor="middle"
+            font-family="JetBrains Mono, monospace" font-size="13" fill="#c7bcab" font-style="italic">
+        next SU
+      </text>
+    </svg>
+  </div>
+  <aside class="notes">
+    Six phases. Phase 02 is optional — skip it for small SUs that don't need cycle-level architecture work. Everything else is non-negotiable. Note the feedback loop: each PR feeds back into the next SU plan. Lessons travel.
+  </aside>
+</section>
+
+<!-- ================ 4. PHASE 01 DIVIDER ================ -->
+<section class="phase-divider">
+  <div class="blueprint-grid"></div>
+  <div class="slide-frame">
+    <div class="phase-num">01</div>
+    <div class="phase-label">Investigate</div>
+    <div class="phase-title">Before you plan,<br>learn.</div>
+  </div>
+  <aside class="notes">
+    Phase 01. The temptation is always to skip this and jump to planning. Don't. The investigation phase is where you convert gut feel into evidence and avoid building the wrong thing twice.
+  </aside>
+</section>
+
+<!-- ================ 5. PHASE 01 DETAIL ================ -->
+<section>
+  <div class="slide-frame">
+    <div class="crumb"><span class="num">01</span><span class="dot"></span><span>Investigate</span></div>
+    <h2>What to research</h2>
+    <div class="two-col">
+      <div>
+        <h4>Sources</h4>
+        <ul>
+          <li><strong>Current architecture</strong> — code paths, services, contracts</li>
+          <li><strong>Usage data</strong> — BigQuery, Google Analytics</li>
+          <li><strong>Prior work</strong> — Jira, Confluence, past PRs</li>
+          <li><strong>Spikes</strong> — small prototypes when a question can't be answered by reading</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Where it lives</h4>
+        <p style="font-size: 0.9em;">Confluence: <code>Project &gt; Engineering &gt; Research &gt; [Topic]</code></p>
+        <p style="font-size: 0.9em; color: var(--text-soft);">Link the research doc from the SU plan. Don't bury it in Slack.</p>
+        <div class="callout">⚑ Convert gut feel into evidence.</div>
+      </div>
+    </div>
+    <div class="dod">
+      <div class="check">✓ DONE WHEN</div>
+      <div>Research doc exists in Confluence · key unknowns listed explicitly · decisions backed by either data or "we accept this risk because…"</div>
+    </div>
+  </div>
+  <aside class="notes">
+    Four sources. BigQuery and GA are underused — check actual usage before you assume what users do. Jira history is gold for "have we tried this before and why didn't it stick?" Prototypes only when reading the code can't answer the question. DoD: a doc, a list of unknowns, and named decisions. No "TBD."
+  </aside>
+</section>
+
+<!-- ================ 6. PHASE 02 DIVIDER ================ -->
+<section class="phase-divider">
+  <div class="blueprint-grid"></div>
+  <div class="slide-frame">
+    <div class="phase-num">02</div>
+    <div class="phase-label">Cycle plan <span class="pill optional">optional</span></div>
+    <div class="phase-title">Decide the shape<br>before the slices.</div>
+    <p class="phase-when">Skip this for small cycles where the SU plan is enough. Use it when the work spans multiple SUs or touches architecture.</p>
+  </div>
+  <aside class="notes">
+    Phase 02 is optional. If you're doing a 1–2 SU cycle that doesn't touch architecture or DB shape, skip straight to SU planning. If the cycle has 3+ SUs or touches things like DB schema, security boundaries, or shared services — you need this.
+  </aside>
+</section>
+
+<!-- ================ 7. PHASE 02 DETAIL ================ -->
+<section>
+  <div class="slide-frame">
+    <div class="crumb"><span class="num">02</span><span class="dot"></span><span>Cycle plan</span></div>
+    <h2>What to cover</h2>
+    <div class="tag-row">
+      <span class="tag">Architecture</span>
+      <span class="tag">Database</span>
+      <span class="tag">UI / UX</span>
+      <span class="tag">Security</span>
+      <span class="tag">Performance</span>
+      <span class="tag">Testing</span>
+      <span class="tag">Observability</span>
+      <span class="tag">Migration / rollout</span>
+    </div>
+    <div class="two-col">
+      <div>
+        <h4>Output</h4>
+        <ul>
+          <li>A picture paints a thousand words — diagram before you describe</li>
+          <li>Decisions named, alternatives mentioned</li>
+          <li>Leads in the loop early</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Not the goal</h4>
+        <ul>
+          <li>Solving every unknown</li>
+          <li>Pixel-perfect design</li>
+          <li>Full task breakdown — that's <span class="pill">03</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="dod">
+      <div class="check">✓ DONE WHEN</div>
+      <div>Key cycle-level decisions documented · diagrams in place · open questions named (not silenced)</div>
+    </div>
+  </div>
+  <aside class="notes">
+    Cycle planning is about shape, not slices. Architecture, DB design, UI flow, security boundary, perf budget, test strategy. Output is diagrams plus decisions — not prose. Avoid the trap of trying to solve everything here — task-level breakdown belongs to the SU plan.
+  </aside>
+</section>
+
+<!-- ================ 8. PHASE 03 DIVIDER ================ -->
+<section class="phase-divider">
+  <div class="blueprint-grid"></div>
+  <div class="slide-frame">
+    <div class="phase-num">03</div>
+    <div class="phase-label">SU plan</div>
+    <div class="phase-title">Plan the slice<br>like you'll be judged on it.</div>
+  </div>
+  <aside class="notes">
+    Phase 03 is where most of the time and most of the value lives. A great SU plan makes implementation almost mechanical. A bad SU plan turns implementation into a series of guesses by the agent.
+  </aside>
+</section>
+
+<!-- ================ 9. ANATOMY OF AN SU PROMPT ================ -->
+<section>
+  <div class="slide-frame">
+    <div class="crumb"><span class="num">03</span><span class="dot"></span><span>Anatomy of the prompt</span></div>
+    <h2>What the agent needs from you</h2>
+    <div class="two-col-3-2">
+      <div class="example-prompt"><span class="key">## context</span>
+Add "Recently Viewed Jobs" so people can resume work fast.
+
+<span class="key">## links</span>
+- Brief:    confluence.tradify/jobs/recent-viewed-brief
+- Func spec: confluence.tradify/jobs/recent-viewed-spec
+- Design:   figma.com/file/...
+- Research: confluence.tradify/research/job-resume-patterns
+
+<span class="key">## unknowns</span>
+- Should "viewed" mean opened, or interacted with?
+- Retention window — 30 days? Forever?
+- Should sync across devices or stay local?
+
+<span class="key">## constraints</span>
+- Must work offline
+- No new backend endpoints if avoidable
+
+<span class="emph">## ALWAYS ASK CLARIFYING QUESTIONS FIRST.</span>
+<span class="emph">Do not propose a plan until I confirm.</span></div>
+      <div>
+        <h4>The five blocks</h4>
+        <ul style="font-size: 0.9em;">
+          <li><strong>Context</strong> — what & why, one paragraph</li>
+          <li><strong>Links</strong> — brief, spec, design, research</li>
+          <li><strong>Unknowns</strong> — the things you're not sure about</li>
+          <li><strong>Constraints</strong> — what bounds the solution space</li>
+          <li><strong>The instruction</strong> — clarify before planning</li>
+        </ul>
+        <div class="callout">⚑ Always ask for clarifying questions first.</div>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">
+    Five blocks. The last one is non-negotiable. If you skip "ask clarifying questions first," the agent will fill the gaps with assumptions. The unknowns block is where you list everything you'd otherwise have to guess.
+  </aside>
+</section>
+
+<!-- ================ 10. TASK BREAKDOWN RULES ================ -->
+<section>
+  <div class="slide-frame">
+    <div class="crumb"><span class="num">03</span><span class="dot"></span><span>Task breakdown</span></div>
+    <h2>The rules</h2>
+    <div class="two-col">
+      <div>
+        <h4>Required</h4>
+        <ul>
+          <li><strong>One ticket = one PR.</strong> No exceptions.</li>
+          <li>Dependency graph — explicit, drawn</li>
+          <li>Each task independently testable</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Smells</h4>
+        <ul>
+          <li>"Implement feature X" — too big</li>
+          <li>"Refactor and add Y" — that's two PRs</li>
+          <li>Tasks that touch unrelated parts of the codebase</li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout">⚑ If a task or PR can't be reviewed in less than 30 minutes, split it.</div>
+  </div>
+  <aside class="notes">
+    One ticket = one PR. Hammer this. The dependency graph isn't a nice-to-have — it's how the team understands what blocks what, and it's how the implementation phase can parallelize. The 30-minute rule is the simplest test.
+  </aside>
+</section>
+
+<!-- ================ 11. ITERATING WITH DEVIN ================ -->
+<section>
+  <div class="slide-frame">
+    <div class="crumb"><span class="num">03</span><span class="dot"></span><span>The planning loop</span></div>
+    <h2 style="font-size:1.9em;">Iterate until the plan reads boring</h2>
+
+    <svg class="diagram" viewBox="0 0 800 720" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" style="max-height: 64vh;">
+      <defs>
+        <marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#c7bcab"/>
+        </marker>
+      </defs>
+
+      <g font-family="JetBrains Mono, monospace" font-size="15" font-weight="500" fill="#fefcf7">
+        <rect x="290" y="20"  width="220" height="60" rx="6" fill="#221f1a" stroke="#f08653" stroke-width="2"/>
+        <text x="400" y="55"  text-anchor="middle">Send prompt</text>
+
+        <rect x="290" y="120" width="220" height="60" rx="6" fill="#221f1a" stroke="#f08653" stroke-width="2"/>
+        <text x="400" y="155" text-anchor="middle">Devin asks clarifying Qs</text>
+
+        <rect x="290" y="220" width="220" height="60" rx="6" fill="#221f1a" stroke="#f08653" stroke-width="2"/>
+        <text x="400" y="255" text-anchor="middle">You answer</text>
+
+        <rect x="290" y="320" width="220" height="60" rx="6" fill="#221f1a" stroke="#f08653" stroke-width="2"/>
+        <text x="400" y="355" text-anchor="middle">Devin proposes plan + graph</text>
+
+        <!-- Decision diamond -->
+        <polygon points="400,410 500,470 400,530 300,470" fill="#1f1c18" stroke="#a5d0bd" stroke-width="2"/>
+        <text x="400" y="475" text-anchor="middle">Team review</text>
+
+        <rect x="290" y="565" width="220" height="60" rx="6" fill="#221f1a" stroke="#f08653" stroke-width="2"/>
+        <text x="400" y="600" text-anchor="middle">Create Confluence page</text>
+
+        <rect x="290" y="650" width="220" height="60" rx="6" fill="#221f1a" stroke="#f08653" stroke-width="2"/>
+        <text x="400" y="685" text-anchor="middle">Devin populates the page</text>
+      </g>
+
+      <!-- Vertical arrows between sequential nodes -->
+      <g stroke="#c7bcab" stroke-width="2" fill="none">
+        <line x1="400" y1="80"  x2="400" y2="117" marker-end="url(#ar2)"/>
+        <line x1="400" y1="180" x2="400" y2="217" marker-end="url(#ar2)"/>
+        <line x1="400" y1="280" x2="400" y2="317" marker-end="url(#ar2)"/>
+        <line x1="400" y1="380" x2="400" y2="408" marker-end="url(#ar2)"/>
+        <line x1="400" y1="530" x2="400" y2="562" marker-end="url(#ar2)"/>
+        <line x1="400" y1="625" x2="400" y2="647" marker-end="url(#ar2)"/>
+      </g>
+
+      <!-- "happy" label next to diamond → Confluence page arrow -->
+      <text x="425" y="550" font-family="JetBrains Mono, monospace" font-size="13" fill="#a5d0bd" font-style="italic">happy</text>
+
+      <!-- Feedback loop: diamond left → back to "You answer" left, dashed -->
+      <path d="M 300 470 C 170 470, 170 250, 287 250"
+            stroke="#c7bcab" stroke-width="2" fill="none"
+            stroke-dasharray="5 4" marker-end="url(#ar2)"/>
+      <text x="190" y="365" text-anchor="middle"
+            font-family="JetBrains Mono, monospace" font-size="13" fill="#a5d0bd" font-style="italic">
+        changes
+      </text>
+    </svg>
+  </div>
+  <aside class="notes">
+    The loop. Send prompt, get clarifying questions, answer them, get a plan, review, iterate. "Boring" is a compliment here — when the plan stops surprising you, it's ready. Then create the empty Confluence page yourself (so you control the URL and breadcrumb), and have Devin populate it.
+  </aside>
+</section>
+
+<!-- ================ 12. WHERE THE PLAN LIVES ================ -->
+<section>
+  <div class="slide-frame">
+    <div class="crumb"><span class="num">03</span><span class="dot"></span><span>Where the plan lives</span></div>
+    <h2>Confluence is the source of truth</h2>
+    <p style="font-size: 0.95em; color: var(--text-soft); margin-top: -0.3em;">
+      Path: <code>Project &gt; Engineering &gt; SU01 — [Feature name]</code>
+    </p>
+    <h4 style="margin-top: 1.3em;">Two ways to make changes</h4>
+    <div class="two-col">
+      <div class="card">
+        <h4 style="color: var(--accent-cool);">Edit by hand</h4>
+        <p style="font-size: 0.92em; margin: 0;">Open the page and edit it yourself. Good for small tweaks, typo fixes, or quick clarifications.</p>
+      </div>
+      <div class="card">
+        <h4 style="color: var(--accent);">Ask Devin</h4>
+        <p style="font-size: 0.92em; margin: 0;">Ask Devin to read the page, apply the changes, and update it. Good for bigger reshapes or new sections.</p>
+      </div>
+    </div>
+    <p style="margin-top: 1.2em; color: var(--text-soft); font-size: 0.92em;">Either works — pick whichever is faster for the change you need.</p>
+  </div>
+  <aside class="notes">
+    Confluence is the home for the plan. Two equally valid ways to make changes. The only thing to avoid is having two people editing at once without coordinating — same as any shared doc.
+  </aside>
+</section>
+
+<!-- ================ 13. PHASE 03 DoD ================ -->
+<section>
+  <div class="slide-frame center">
+    <div class="crumb"><span class="num">03</span><span class="dot"></span><span>SU plan</span></div>
+    <h2 style="font-size:2em;">Plan is done when…</h2>
+    <ul style="font-size: 1.05em; line-height: 1.7; max-width: 32em;">
+      <li>Plan lives in Confluence under <code>Project &gt; Engineering</code></li>
+      <li>Dependency graph present (and accurate)</li>
+      <li>Every task is reviewable in &lt;30 min</li>
+      <li>Lead and EM have reviewed</li>
+      <li>Zero "TBD" sections</li>
+    </ul>
+  </div>
+  <aside class="notes">
+    Five exit criteria. The "TBD" one matters most — TBDs in plans almost always become assumptions in code. If you have TBDs, the plan isn't done.
+  </aside>
+</section>
+
+<!-- ================ 14. WORKED EXAMPLE — PROMPT ================ -->
+<section>
+  <div class="slide-frame">
+    <div class="crumb"><span class="num">EX</span><span class="dot"></span><span>Worked example · the prompt</span></div>
+    <h2 style="font-size:1.7em;">SU01 — Recently Viewed Jobs</h2>
+    <p style="color: var(--text-soft); font-size: 0.95em; margin-top: -0.4em;">A real-shaped (not real) SU we'll walk through end to end.</p>
+    <div class="example-prompt" style="margin-top: 1em;"><span class="key">## context</span>
+People open the app to resume the job they were on. Currently they have to search for it again every time.
+Add a "Recently Viewed Jobs" section to the home screen showing the last 5 jobs they opened.
+
+<span class="key">## links</span>
+- Brief:        confluence.tradify/jobs/recent-viewed-brief
+- Func spec:    confluence.tradify/jobs/recent-viewed-spec
+- Design:       figma.com/file/recent-jobs-v3
+- Research:     confluence.tradify/research/job-resume-patterns (BigQuery: 73% of sessions reopen a recent job)
+
+<span class="key">## unknowns</span>
+- "Viewed" definition — first open, or any interaction?
+- Retention — 30 days? Forever-til-replaced?
+- Sync across devices, or local-only?
+- Behaviour when offline and list is empty?
+
+<span class="key">## constraints</span>
+- Must work offline
+- No new backend endpoints unless absolutely required
+- Telemetry: existing job_opened event is enough, add a section_tapped event
+
+<span class="emph">## ALWAYS ASK CLARIFYING QUESTIONS FIRST.</span>
+<span class="emph">Do not propose a plan or write code until I confirm answers.</span></div>
+  </div>
+  <aside class="notes">
+    A realistic SU prompt. Notice: context is one paragraph. Links are named. Unknowns are real questions. Constraints bound the solution space without prescribing the solution. The final two lines are the gate.
+  </aside>
+</section>
+
+<!-- ================ 15. WORKED EXAMPLE — BREAKDOWN ================ -->
+<section>
+  <div class="slide-frame">
+    <div class="crumb"><span class="num">EX</span><span class="dot"></span><span>Worked example · the breakdown</span></div>
+    <h2 style="font-size:1.7em;">Task graph (after clarification)</h2>
+
+    <svg class="diagram" viewBox="0 0 900 720" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" style="max-height: 64vh;">
+      <defs>
+        <marker id="ar3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#c7bcab"/>
+        </marker>
+      </defs>
+
+      <g font-family="JetBrains Mono, monospace" fill="#fefcf7">
+        <!-- T1 top-left -->
+        <rect x="60"  y="20"  width="260" height="84" rx="6" fill="#221f1a" stroke="#f08653" stroke-width="2"/>
+        <text x="190" y="52"  text-anchor="middle" font-size="15" font-weight="500">T1 · Storage schema</text>
+        <text x="190" y="76"  text-anchor="middle" font-size="13" fill="#ede4d4">recent_jobs table</text>
+
+        <!-- T5 top-right -->
+        <rect x="580" y="20"  width="260" height="84" rx="6" fill="#221f1a" stroke="#f08653" stroke-width="2"/>
+        <text x="710" y="52"  text-anchor="middle" font-size="15" font-weight="500">T5 · Hook</text>
+        <text x="710" y="76"  text-anchor="middle" font-size="13" fill="#ede4d4">Job detail → record on open</text>
+
+        <!-- T2 -->
+        <rect x="320" y="170" width="260" height="84" rx="6" fill="#221f1a" stroke="#f08653" stroke-width="2"/>
+        <text x="450" y="202" text-anchor="middle" font-size="15" font-weight="500">T2 · Repository</text>
+        <text x="450" y="226" text-anchor="middle" font-size="13" fill="#ede4d4">read/write, FIFO 5</text>
+
+        <!-- T3 -->
+        <rect x="320" y="310" width="260" height="84" rx="6" fill="#221f1a" stroke="#f08653" stroke-width="2"/>
+        <text x="450" y="342" text-anchor="middle" font-size="15" font-weight="500">T3 · ViewModel</text>
+        <text x="450" y="366" text-anchor="middle" font-size="13" fill="#ede4d4">RecentJobs + binding</text>
+
+        <!-- T4 -->
+        <rect x="320" y="450" width="260" height="84" rx="6" fill="#221f1a" stroke="#f08653" stroke-width="2"/>
+        <text x="450" y="482" text-anchor="middle" font-size="15" font-weight="500">T4 · UI</text>
+        <text x="450" y="506" text-anchor="middle" font-size="13" fill="#ede4d4">Home section + empty state</text>
+
+        <!-- T6 bottom-left -->
+        <rect x="60"  y="600" width="260" height="84" rx="6" fill="#221f1a" stroke="#f08653" stroke-width="2"/>
+        <text x="190" y="632" text-anchor="middle" font-size="15" font-weight="500">T6 · Telemetry</text>
+        <text x="190" y="656" text-anchor="middle" font-size="13" fill="#ede4d4">section_tapped event</text>
+
+        <!-- T7 bottom-right -->
+        <rect x="580" y="600" width="260" height="84" rx="6" fill="#221f1a" stroke="#f08653" stroke-width="2"/>
+        <text x="710" y="632" text-anchor="middle" font-size="15" font-weight="500">T7 · Tests</text>
+        <text x="710" y="656" text-anchor="middle" font-size="13" fill="#ede4d4">unit + UI + offline</text>
+      </g>
+
+      <!-- Arrows -->
+      <g stroke="#c7bcab" stroke-width="2" fill="none">
+        <!-- T1 → T2 (diagonal down-right) -->
+        <line x1="240" y1="104" x2="385" y2="168" marker-end="url(#ar3)"/>
+        <!-- T5 → T2 (diagonal down-left) -->
+        <line x1="660" y1="104" x2="515" y2="168" marker-end="url(#ar3)"/>
+        <!-- T2 → T3 (vertical) -->
+        <line x1="450" y1="254" x2="450" y2="308" marker-end="url(#ar3)"/>
+        <!-- T3 → T4 (vertical) -->
+        <line x1="450" y1="394" x2="450" y2="448" marker-end="url(#ar3)"/>
+        <!-- T4 → T6 (diagonal down-left) -->
+        <line x1="370" y1="534" x2="240" y2="598" marker-end="url(#ar3)"/>
+        <!-- T4 → T7 (diagonal down-right) -->
+        <line x1="530" y1="534" x2="660" y2="598" marker-end="url(#ar3)"/>
+      </g>
+    </svg>
+
+    <p style="font-size: 0.8em; color: var(--text-muted); margin-top: 0.3em; text-align: center;">
+      7 tasks · 7 PRs · parallelizable from T2 onwards · each reviewable in &lt;30 min
+    </p>
+  </div>
+  <aside class="notes">
+    Same SU broken into tasks. Each node is one PR. The graph shows what can run in parallel — once T2 lands, T3 and T5 can go at the same time. T4 then unblocks T6 and T7. You can't make these tradeoffs without a graph.
+  </aside>
+</section>
+
+<!-- ================ 16. PHASE 04 DIVIDER ================ -->
+<section class="phase-divider">
+  <div class="blueprint-grid"></div>
+  <div class="slide-frame">
+    <div class="phase-num">04</div>
+    <div class="phase-label">Tickets</div>
+    <div class="phase-title">Turn the plan<br>into Jira.</div>
+  </div>
+  <aside class="notes">
+    Phase 04. Short phase. Mechanical. But still has a gotcha — the back-link.
+  </aside>
+</section>
+
+<!-- ================ 17. PHASE 04 DETAIL ================ -->
+<section>
+  <div class="slide-frame">
+    <div class="crumb"><span class="num">04</span><span class="dot"></span><span>Tickets</span></div>
+    <h2>The handover</h2>
+    <div class="two-col">
+      <div>
+        <h4>What you give Devin</h4>
+        <ul>
+          <li>Confluence page URL</li>
+          <li><strong>Sprint number</strong></li>
+          <li><strong>Epic name</strong></li>
+          <li>Project key if not default</li>
+        </ul>
+      </div>
+      <div>
+        <h4>What Devin does</h4>
+        <ul>
+          <li>Creates one ticket per task</li>
+          <li>Sets sprint, Epic, project</li>
+          <li><strong>Links each ticket back to its task</strong> on the Confluence page (bidirectional)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout">⚑ New Devin session for tickets. Don't reuse the planning session — context bleed.</div>
+    <div class="dod">
+      <div class="check">✓ DONE WHEN</div>
+      <div>Every task has a ticket · tickets live in the right Epic + sprint · Confluence page shows ticket links next to each task</div>
+    </div>
+  </div>
+  <aside class="notes">
+    New Devin session. Always. The planning session has too much context and Devin will second-guess the plan instead of just making tickets. The back-link to the Confluence page matters — without it, the plan and the tickets drift.
+  </aside>
+</section>
+
+<!-- ================ 18. PHASE 05 DIVIDER ================ -->
+<section class="phase-divider">
+  <div class="blueprint-grid"></div>
+  <div class="slide-frame">
+    <div class="phase-num">05</div>
+    <div class="phase-label">Implement</div>
+    <div class="phase-title">Plan first.<br>Code second.<br>Verify always.</div>
+  </div>
+  <aside class="notes">
+    Phase 05. The fun part. Also the part where people skip the planning gate because "it's just a small task." Don't.
+  </aside>
+</section>
+
+<!-- ================ 19. PHASE 05 DETAIL ================ -->
+<section>
+  <div class="slide-frame">
+    <div class="crumb"><span class="num">05</span><span class="dot"></span><span>Implement</span></div>
+    <h2>Per-task workflow</h2>
+    <div class="two-col">
+      <div>
+        <h4>Setup</h4>
+        <ul>
+          <li>Your tool of choice — Claude Code, GitHub Copilot, Devin, local</li>
+          <li><strong>Atlassian MCP connected</strong> — agent reads the ticket directly</li>
+          <li>Feed the ticket as context. Add anything else useful.</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Workflow</h4>
+        <ol style="font-size: 0.92em;">
+          <li><strong>Plan first.</strong> Always.</li>
+          <li><strong>Ask for clarifying questions.</strong> Avoid assumptions before code.</li>
+          <li>Confirm plan, then implement</li>
+          <li>Review per-step or as-whole — your call</li>
+          <li><strong>Run and verify yourself.</strong> You own the code.</li>
+        </ol>
+      </div>
+    </div>
+    <div class="callout">⚑ The agent typed it. You shipped it.</div>
+  </div>
+  <aside class="notes">
+    Same rules as SU planning, just at task level. Plan first, clarify first. Review style is personal. What's non-negotiable: you run the thing yourself before it goes anywhere.
+  </aside>
+</section>
+
+<!-- ================ 20. PHASE 06 DIVIDER ================ -->
+<section class="phase-divider">
+  <div class="blueprint-grid"></div>
+  <div class="slide-frame">
+    <div class="phase-num">06</div>
+    <div class="phase-label">PR</div>
+    <div class="phase-title">Draft until proud.<br>Ready when reviewable.</div>
+  </div>
+  <aside class="notes">
+    Phase 06. Short but with two explicit signals — Draft vs Ready — that we want everyone using consistently.
+  </aside>
+</section>
+
+<!-- ================ 21. PHASE 06 DETAIL ================ -->
+<section>
+  <div class="slide-frame">
+    <div class="crumb"><span class="num">06</span><span class="dot"></span><span>PR</span></div>
+    <h2>Two states. One signal each.</h2>
+    <div class="two-col">
+      <div class="card">
+        <h4 style="color: var(--text-muted);">⊘ Draft</h4>
+        <p style="font-size: 0.92em; margin: 0;">Work in progress. <strong>Do not request review.</strong> CI runs, you iterate, no one is on the hook for reading it yet.</p>
+      </div>
+      <div class="card">
+        <h4 style="color: var(--accent);">▸ Ready</h4>
+        <p style="font-size: 0.92em; margin: 0;">Reviewable and mergeable. You've ticked it as owner. CI green. Testing notes attached.</p>
+      </div>
+    </div>
+    <h4 style="margin-top: 1.4em;">After PR exists</h4>
+    <ul>
+      <li>Hand the PR to Devin → ask for <strong>comprehensive testing notes</strong></li>
+      <li>Owner tick (you) → flip from Draft to Ready</li>
+      <li>Request reviewers</li>
+    </ul>
+    <div class="dod">
+      <div class="check">✓ DONE WHEN</div>
+      <div>PR Ready · CI green · testing notes in description · owner tick · linked to ticket</div>
+    </div>
+  </div>
+  <aside class="notes">
+    Draft means WIP — don't ping people. Ready means it's truly ready. Devin generates the testing notes after the diff is stable.
+  </aside>
+</section>
+
+<!-- ================ 22. END-TO-END DIAGRAM ================ -->
+<section>
+  <div class="slide-frame">
+    <div class="crumb"><span class="dot"></span><span>The whole picture</span></div>
+    <h2 style="font-size: 1.7em;">End-to-end</h2>
+
+    <svg class="diagram" viewBox="0 0 1200 600" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" style="max-height: 64vh;">
+      <defs>
+        <marker id="ar4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#c7bcab"/>
+        </marker>
+      </defs>
+
+      <!-- PLAN label -->
+      <text x="40" y="35" font-family="JetBrains Mono, monospace" font-size="14"
+            fill="#f08653" letter-spacing="4" font-weight="500">PLAN</text>
+      <line x1="100" y1="30" x2="1140" y2="30" stroke="#3a352e" stroke-width="1"/>
+
+      <!-- PLAN row boxes -->
+      <g font-family="JetBrains Mono, monospace" fill="#fefcf7">
+        <rect x="40"  y="80"  width="280" height="84" rx="6" fill="#221f1a" stroke="#f08653" stroke-width="2"/>
+        <text x="180" y="112" text-anchor="middle" font-size="15" font-weight="500">01 Investigate</text>
+        <text x="180" y="136" text-anchor="middle" font-size="13" fill="#ede4d4">research doc</text>
+
+        <rect x="370" y="80"  width="280" height="84" rx="6" fill="#221f1a" stroke="#f08653" stroke-width="2"/>
+        <text x="510" y="112" text-anchor="middle" font-size="15" font-weight="500">02 Cycle plan</text>
+        <text x="510" y="136" text-anchor="middle" font-size="13" fill="#ede4d4">diagrams + decisions</text>
+
+        <rect x="700" y="80"  width="280" height="84" rx="6" fill="#221f1a" stroke="#f08653" stroke-width="2"/>
+        <text x="840" y="112" text-anchor="middle" font-size="15" font-weight="500">03 SU plan</text>
+        <text x="840" y="136" text-anchor="middle" font-size="13" fill="#ede4d4">Confluence + graph</text>
+      </g>
+
+      <!-- PLAN row arrows -->
+      <g stroke="#c7bcab" stroke-width="2" fill="none">
+        <line x1="320" y1="122" x2="368" y2="122" marker-end="url(#ar4)"/>
+        <line x1="650" y1="122" x2="698" y2="122" marker-end="url(#ar4)"/>
+        <!-- skip dashed under -->
+        <path d="M 180 164 C 180 220, 840 220, 840 167"
+              stroke="#c7bcab" stroke-width="2" fill="none"
+              stroke-dasharray="5 4" marker-end="url(#ar4)"/>
+      </g>
+      <text x="510" y="245" text-anchor="middle"
+            font-family="JetBrains Mono, monospace" font-size="13" fill="#c7bcab" font-style="italic">
+        skip
+      </text>
+
+      <!-- Cross-section arrow: SU plan bottom → Tickets top (long S-curve) -->
+      <path d="M 840 164 C 840 290, 180 290, 180 388"
+            stroke="#c7bcab" stroke-width="2.5" fill="none" marker-end="url(#ar4)"/>
+
+      <!-- BUILD label -->
+      <text x="40" y="335" font-family="JetBrains Mono, monospace" font-size="14"
+            fill="#f08653" letter-spacing="4" font-weight="500">BUILD</text>
+      <line x1="108" y1="330" x2="1140" y2="330" stroke="#3a352e" stroke-width="1"/>
+
+      <!-- BUILD row boxes -->
+      <g font-family="JetBrains Mono, monospace" fill="#fefcf7">
+        <rect x="40"  y="390" width="280" height="84" rx="6" fill="#221f1a" stroke="#f08653" stroke-width="2"/>
+        <text x="180" y="422" text-anchor="middle" font-size="15" font-weight="500">04 Tickets</text>
+        <text x="180" y="446" text-anchor="middle" font-size="13" fill="#ede4d4">Devin → Jira, back-linked</text>
+
+        <rect x="370" y="390" width="280" height="84" rx="6" fill="#221f1a" stroke="#f08653" stroke-width="2"/>
+        <text x="510" y="422" text-anchor="middle" font-size="15" font-weight="500">05 Implement</text>
+        <text x="510" y="446" text-anchor="middle" font-size="13" fill="#ede4d4">plan · clarify · build · verify</text>
+
+        <rect x="700" y="390" width="280" height="84" rx="6" fill="#221f1a" stroke="#f08653" stroke-width="2"/>
+        <text x="840" y="422" text-anchor="middle" font-size="15" font-weight="500">06 PR</text>
+        <text x="840" y="446" text-anchor="middle" font-size="13" fill="#ede4d4">Draft → Ready, testing notes</text>
+      </g>
+
+      <!-- BUILD row arrows -->
+      <g stroke="#c7bcab" stroke-width="2" fill="none">
+        <line x1="320" y1="432" x2="368" y2="432" marker-end="url(#ar4)"/>
+        <line x1="650" y1="432" x2="698" y2="432" marker-end="url(#ar4)"/>
+      </g>
+
+      <!-- Feedback loop dashed: 06 PR right → curves around → back to 03 SU plan right -->
+      <path d="M 980 432 C 1130 432, 1130 122, 982 122"
+            stroke="#c7bcab" stroke-width="2" fill="none"
+            stroke-dasharray="5 4" marker-end="url(#ar4)"/>
+      <text x="1120" y="277" text-anchor="middle"
+            font-family="JetBrains Mono, monospace" font-size="13" fill="#c7bcab" font-style="italic">
+        lessons
+      </text>
+    </svg>
+  </div>
+  <aside class="notes">
+    The full picture. Two halves — plan and build. Feedback loop from PR back to SU plan: lessons travel. Worth pausing here for questions about the overall shape.
+  </aside>
+</section>
+
+<!-- ================ 23. ANTI-PATTERNS ================ -->
+<section>
+  <div class="slide-frame">
+    <div class="crumb"><span class="dot"></span><span>Anti-patterns</span></div>
+    <h2>What not to do</h2>
+    <div class="anti-grid">
+      <div class="anti"><span class="x">✕</span> <strong>Skipping clarifying questions.</strong> The agent fills gaps with assumptions you'll only find in code review.</div>
+      <div class="anti"><span class="x">✕</span> <strong>Monolithic PRs.</strong> "One ticket = one PR" violated. Reviewers tap out. Bugs hide.</div>
+      <div class="anti"><span class="x">✕</span> <strong>Plans without dependency graphs.</strong> If you can't draw it, you don't understand the work.</div>
+      <div class="anti"><span class="x">✕</span> <strong>Vague prompts.</strong> "Devin will figure it out" → Devin invents requirements. Garbage in, plausible-looking garbage out.</div>
+      <div class="anti"><span class="x">✕</span> <strong>Skipping the review gate to look fast.</strong> You shave a day. You add a week of rework. Always.</div>
+      <div class="anti"><span class="x">✕</span> <strong>Treating Ready like Draft.</strong> "It's basically done" — reviewers waste time on WIP code.</div>
+      <div class="anti"><span class="x">✕</span> <strong>Not running it yourself.</strong> The agent shipped. You owned. Always verify before Ready.</div>
+      <div class="anti"><span class="x">✕</span> <strong>TBDs in the final plan.</strong> TBDs always become assumptions in code. Resolve before tickets.</div>
+    </div>
+  </div>
+  <aside class="notes">
+    Eight anti-patterns. Worth reading aloud. The pattern across all of them: cutting the human gates to look fast.
+  </aside>
+</section>
+
+<!-- ================ 24. CHEAT SHEET ================ -->
+<section>
+  <div class="slide-frame">
+    <div class="crumb"><span class="dot"></span><span>Cheat sheet · screenshot this one</span></div>
+    <h2 style="font-size: 1.8em;">The SU loop, on one page</h2>
+    <table class="cheat-table">
+      <thead>
+        <tr><th>Phase</th><th>Output</th><th>Done when</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>01 · Investigate</td><td>Research doc</td><td>Confluence doc · unknowns named · evidence not vibes</td></tr>
+        <tr><td>02 · Cycle plan <em>(opt)</em></td><td>Diagrams + decisions</td><td>Leads in the loop · open Qs visible · key decisions named</td></tr>
+        <tr><td>03 · SU plan</td><td>Confluence + graph</td><td>Zero TBDs · lead+EM reviewed · each PR &lt;30min review</td></tr>
+        <tr><td>04 · Tickets</td><td>Jira tickets + back-links</td><td>One ticket per task · in Epic + sprint · Confluence shows links</td></tr>
+        <tr><td>05 · Implement</td><td>Code + tests</td><td>Plan-first per task · clarified · verified by you · linked to ticket</td></tr>
+        <tr><td>06 · PR</td><td>Mergeable diff</td><td>Ready (not Draft) · testing notes · owner tick · CI green</td></tr>
+      </tbody>
+    </table>
+    <div class="callout" style="margin-top: 1em;">⚑ Always ask clarifying questions first. Always plan before code. You own what the agent ships.</div>
+  </div>
+  <aside class="notes">
+    Cheat sheet slide. Tell people to screenshot this one. It's the deck compressed to one screen.
+  </aside>
+</section>
+
+<!-- ================ 25. DISCUSSION ================ -->
+<section class="title-slide">
+  <div class="slide-frame">
+    <div class="eyebrow">Open floor</div>
+    <h1 style="font-size: 5em;">Questions &<br>pushback.</h1>
+    <p class="tagline">What's missing? What's wrong? What will break first when we try it?</p>
+    <div class="meta">
+      <span>Tradify Engineering</span>
+    </div>
+  </div>
+  <aside class="notes">
+    Open it up.
+    1) Do we want a shared SU plan template in Confluence? If so, who drafts the first one?
+    2) Where do we expect the first failures? Pre-mortem the process.
+    3) Any phase that feels heavier than it should be?
+  </aside>
+</section>
+
+</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/plugin/notes/notes.min.js"></script>
+
+<script>
+  Reveal.initialize({
+    hash: true,
+    controls: true,
+    progress: true,
+    slideNumber: 'c/t',
+    transition: 'fade',
+    transitionSpeed: 'fast',
+    backgroundTransition: 'fade',
+    width: 1400,
+    height: 900,
+    margin: 0.04,
+    minScale: 0.2,
+    maxScale: 1.6,
+    plugins: [RevealNotes]
+  });
+</script>
+
+</body>
+</html>
