@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(rtk ls *)",
+      "Bash(rtk find *)",
+      "Bash(rtk read *)",
+      "Bash(mkdir -p /mnt/c/src/websites/stephanventer.github.io/static/transonic)",
+      "Bash(cp \"/mnt/c/src/games/transonic/privacy_policy.html\" /mnt/c/src/websites/stephanventer.github.io/static/transonic/privacy_policy.html)",
+      "Bash(rtk git *)",
+      "Bash(rtk grep *)"
+    ]
+  }
+}
